@@ -48,10 +48,12 @@ echo
 read -p "Cocktail Table dipswitch Rom's only? (y/N) " -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     RunCommand=$RunCommand"//parent::machine/dipswitch/dipvalue[@name=\"Cocktail\"]//parent::dipswitch//parent::machine'"
+#    RunCommand=$RunCommand"//parent::machine/configuration/confsetting[@name=\"Cocktail\"]//parent::configuration//parent::machine'"
     OutputFileName=$OutputFileName"Cocktail"
 else
     RunCommand=$RunCommand"//parent::machine'"
 fi
+
 
 OutputFileName=$OutputFileName".xml"
 RunCommand="$RunCommand $1 >> $OutputFileName" 
@@ -75,4 +77,3 @@ else
     echo "</mame>" >> $OutputFileName
     echo -e "\n\n\n\n"
 fi
-
