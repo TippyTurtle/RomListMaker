@@ -23,6 +23,19 @@ else
     exit 1
 fi
 
+# Initialize a variable to store XML content
+xml_content=""
+
+# Read the XML file line by line
+while IFS= read -r line; do
+    # Append each line to the xml_content variable
+    xml_content+="$line"$'\n'
+    # Check if the line contains "<name>"
+    if [[ $line == *"<mame"* ]]; then
+        break  # Exit the loop after reaching "<name>"
+    fi
+done < "$1"
+
 RunCommand="xpath -q -e '/mame/machine"
 OutputFileName="GameList-"
 
@@ -54,7 +67,6 @@ else
     RunCommand=$RunCommand"//parent::machine'"
 fi
 
-
 OutputFileName=$OutputFileName".xml"
 RunCommand="$RunCommand $1 >> $OutputFileName" 
 
@@ -72,7 +84,7 @@ else
     echo
     echo "Outputfile: $OutputFileName"
     echo -e "\n\n\n\n"
-    echo "<mame>" > $OutputFileName
+    echo "$xml_content" > $OutputFileName
     eval "$RunCommand"
     echo "</mame>" >> $OutputFileName
     echo -e "\n\n\n\n"
